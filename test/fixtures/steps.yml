@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  stepwriter: MyString
+  body: MyText
+  tasks_id: 
+
+two:
+  stepwriter: MyString
+  body: MyText
+  tasks_id: 

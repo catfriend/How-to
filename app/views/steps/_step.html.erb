@@ -1,0 +1,15 @@
+<p>
+  <strong>Stepwriter:</strong>
+  <%= step.stepwriter %>
+</p>
+
+<p>
+  <strong>Step:</strong>
+  <%= step.body %>
+</p>
+
+<p>
+  <%= link_to 'Destroy Step', [step.task, comment],
+              method :delete,
+              data: { confirm: 'Are you sure' } %>
+</p>

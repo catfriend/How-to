@@ -1,0 +1,18 @@
+<p>
+  <strong>Title:</strong>
+  <%= @task.title %>
+</p>
+
+<p>
+  <strong>Text:</strong>
+  <%= @task.text %>
+</p>
+
+<h2>Steps</h2>
+<%= render@task.steps %>
+
+<h2>Add a step:</h2>
+<%= render "steps/form" %>
+
+<%= link_to 'Edit Task' edit_task_path(@task) %> |
+<%= link_to 'Back to Tasks', tasks_path %>

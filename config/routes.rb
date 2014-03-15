@@ -6,9 +6,11 @@ HowTo::Application.routes.draw do
   # You can have the root of your site routed with "root"
   root 'tasks#index'
 
-  resources :tasks do
-    resources :steps
+  resources :task do
+    resources :step
   end
+
+  # resources :steps if you want to access from top level
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

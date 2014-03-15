@@ -1,4 +1,6 @@
 class TasksController < ApplicationController
+  before_action :set_project, only: [:show, :edit, :update, :destroy]
+
   def index
     @tasks = Task.all
   end
@@ -8,41 +10,53 @@ class TasksController < ApplicationController
   end
 
   def create
-    @task = Task.new(params[:task].permit(:title, :text))
+    @task = Task.new(project_params)
 
-    if @task.save
-      redirect_to @task
-    else
-      render 'new'
+    respond_to do|format|
+      if @task.save
+        format.html { redirect_to @task, notice: 'Task was successfully created.'}
+        format.json { render action: 'show', status: :created, location: @task}
+      else
+        format.html {render action: 'new' }
+        format.json {render json: @task.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   def show
-    @task = Task.find(params[:id])
+    @task = Task.where(task_id: @task.id)
   end
 
   def edit
-    @task = Task.find(params[:id])
   end
 
   def update
-    @task = Task.find(params[:id])
-
-    if @task.update(params[:task].permit(:title, :text))
-      redirect_to @task
-    else
-      render 'edit'
+    respond_to do |format|
+      if @task.update(task_params)
+        format.html { redirect_to @task, notice: 'Task was successfully updated.'}
+        format.json { head :no_content }
+      else
+        format.html {render action: 'edit' }
+        format.json: @task.errors, status: :unprocessable_entity }
+      end
     end
   end
 
   def destroy
-    @task = Task.find(params[:id])
     @task.destroy
-
-    redirect_to tasks_path
+    respond_to do |format|
+      format.html {redirect_to tasks_url }
+      format.json { head :no_content }
+    end
   end
 
   private
-    def task_params
+
+  def get_step # to access steps at top level - see routes
+    @step = Step.find(params[:id])
+  end
+
+  def task_params
       params.require(:task).permit(:title, :text)
   end
 

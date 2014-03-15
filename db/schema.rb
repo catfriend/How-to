@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140222202446) do
+ActiveRecord::Schema.define(version: 20140222203556) do
 
   create_table "steps", force: true do |t|
     t.string   "stepwriter"
@@ -20,6 +20,8 @@ ActiveRecord::Schema.define(version: 20140222202446) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "steps", ["tasks_id"], name: "index_steps_on_tasks_id"
 
   create_table "tasks", force: true do |t|
     t.string   "title"

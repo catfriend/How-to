@@ -6,7 +6,7 @@ HowTo::Application.routes.draw do
   # You can have the root of your site routed with "root"
   root 'tasks#index'
 
-  resources :task do
+  resources :tasks do
     resources :step
   end
 

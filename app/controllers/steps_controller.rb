@@ -1,59 +1,46 @@
 class StepsController < ApplicationController
-  before_action :set_task, only: [:show, :edit, :update, :destroy]
+  before_action :set_task
+  before action :set_step, only: [:show, :edit, :update, :destroy]
 
   def index
-    @task = Task.where(id: params[:task_id]).first
-    @step = @task.step
+    @steps = @task.steps.all
   end
 
   def show
   end
 
   def new
-    @step = Step.new
+    @step = task.steps.new
   end
 
   def edit
   end
 
   def create
-    @step = Step.new(step_params)
-
-    respond_to do |format|
-      if @step.save
-        format.html { redirect_to @step, notice: 'Step was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @step }
-      else
-        format.html { render action: 'new' }
-        format.json { render json: @step.errors, status: :unprocessable_entity }
-      end
-    end
+    @step = @task.steps.create(step_params)
+    @step.save?
+      (redirect_to task_steps_path, notice: 'Step was successfully created.' )
+      ( render action: 'new')
   end
 
   def update
-    respond_to do |format|
-      if @step.update(step_params)
-        format.html { redirect_to @step, notice: 'Step was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: 'edit' }
-        format.json { render json: @step.errors, status: :unprocessable_entity }
-      end
-    end
+    @step.update(step_params) ?
+      (redirect_to task_steps_path, notice: 'Step was successfully updated.' )
+      ( render action: 'new' )
   end
 
-def destroy
+  def destroy
     @step.destroy
-    respond_to do |format|
-      format.html { redirect_to step_url }
-      format.json { head :no_content }
-    end
+    redirect_to task_steps_path
   end
 
   private
-    def set_task
-      @step =Step.find(params[:id])
+    def set_step
+      @step = task.steps.find(params[:id])
     end
+
+    def set_task
+      @task = Task.find(params[:task_id])
 
     def step_params
       params.require(:step.permit(:title, :notes)

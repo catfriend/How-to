@@ -7,19 +7,15 @@ class TasksController < ApplicationController
 
   def new
     @task = Task.new
+    3.times {@task.steps.build}
   end
 
   def create
-    @task = Task.new(project_params)
-
-    respond_to do|format|
-      if @task.save
-        format.html { redirect_to @task, notice: 'Task was successfully created.'}
-        format.json { render action: 'show', status: :created, location: @task}
-      else
-        format.html {render action: 'new' }
-        format.json {render json: @task.errors, status: :unprocessable_entity }
-      end
+    @task = Task.new(task_params)
+    if @task.save
+      redirect_to @task, notice: 'Task was successfully created.'
+    else
+      render action: 'new'
     end
   end
 
@@ -31,29 +27,23 @@ class TasksController < ApplicationController
   end
 
   def update
-    respond_to do |format|
-      if @task.update(task_params)
-        format.html { redirect_to @task, notice: 'Task was successfully updated.'}
-        format.json { head :no_content }
+    if @task.update(task_params)
+      redirect_to @task, notice: 'Task was successfully updated.'
       else
-        format.html {render action: 'edit' }
-        format.json: @task.errors, status: :unprocessable_entity }
-      end
+        render action: 'edit'
+        format.json: { @task.errors, status: :unprocessable_entity }
     end
   end
 
   def destroy
     @task.destroy
-    respond_to do |format|
-      format.html {redirect_to tasks_url }
-      format.json { head :no_content }
-    end
+    redirect_to tasks_url
   end
 
   private
 
-  def get_step # to access steps at top level - see routes
-    @step = Step.find(params[:id])
+  def set_task# to access steps at top level - see routes
+    @task = Task.find(params[:id])
   end
 
   def task_params
